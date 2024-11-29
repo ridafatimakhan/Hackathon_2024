@@ -4,12 +4,39 @@
     <title>Event replay</title>
 </head>
 <body>
-
-    <select name="cars" id="cars">
-        <option value="volvo">Volvo</option>
-        <option value="saab">Saab</option>
-        <option value="mercedes">Mercedes</option>
-        <option value="audi">Audi</option>
-      </select>
+    <div name="inputs_wrappper" id="inputs_wrappper">
+        <div id="valuePick">
+            <label for="condition">Condition</label>
+            <select name="condition" id="condition">
+                <option value="windSpeed">Wind speed</option>
+                <option value="percipitation">Percipitation</option>
+            </select>
+        </div>
+        <div id="minValue">
+            <label for="minValue">Min value</label>
+            <input type="number" name="min" min = 0/>
+        </div>
+        <div id="maxValue">
+            <label for="maxValue">Max value</label>
+            <input type="number" name="max" min = 0/>
+        </div>
+        <div id="date">
+            <div id="beginDate">
+                <label for="beginDate">Begin date</label>
+                <div id="beginDate">
+                    <input type="date" id="begin" name="begin">
+                </div>
+                <input type="number" name="beginHour" min = 0 max=23/>
+            </div>
+            <div id="endDateText">
+                <label for="endDate">End date</label>
+                <div id="endDate">
+                    <input type="date" id="end" name="end">
+                </div>
+                <input type="number" name="endHour" min = 0 max=23/>
+            </div>
+        </div>
+        <input type="submit" value="Submit">
+    </div>
 </body>
 </html>
