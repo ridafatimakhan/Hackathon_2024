@@ -19,7 +19,9 @@ def get_data():
         "#1#longStationName",  # x-axis values
         "#1#windSpeed",
         "#1#totalPrecipitationOrTotalWaterEquivalent",
-        "#1#dewpointTemperature"
+        "#1#dewpointTemperature",
+        "#1#airTemperature",
+        "#1#maximumWindGustSpeed"
     ]
     
     try:

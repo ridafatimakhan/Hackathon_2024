@@ -89,7 +89,11 @@ header img {
         <canvas id="dataChart" width="400" height="200"></canvas>
     </div>
 
-    
+    <h2>Statistics</h2>
+    <div id="statistics">
+        <p>No data available yet. Please select a variable.</p>
+    </div>
+
 
     <script>
         let chart; // Chart.js instance
@@ -98,7 +102,9 @@ header img {
         const columnDisplayNames = {
             "#1#windSpeed": "Wind Speed",
             "#1#totalPrecipitationOrTotalWaterEquivalent": "Total Precipitation",
-            "#1#dewpointTemperature": "Dew Point Temperature"
+            "#1#dewpointTemperature": "Dew Point Temperature",
+            "#1#airTemperature": "Air Temperature",
+            "#1#maximumWindGustSpeed": "Max Wind Gust"
         };
 
         // Initialize the Leaflet map
@@ -156,11 +162,24 @@ header img {
         function updateChart(data, selectedVariable) {
             const labels = data.map(item => item["#1#longStationName"] || "Unknown");
             const values = data.map(item => item[selectedVariable] || null);
-
+        
+            // Mapping of variables to their units
+            const variableUnits = {
+                "#1#windSpeed": "Wind Speed [m/s]", // SI unit for wind speed
+                "#1#totalPrecipitationOrTotalWaterEquivalent": "Precipitation [mm]", // SI unit for precipitation
+                "#1#dewpointTemperature": "Dew Point Temperature [K]", // SI unit for temperature (Kelvin)
+                "#1#airTemperature": "Air Temperature [K]", // SI unit for temperature (Kelvin)
+                "#1#maximumWindGustSpeed": "Gust Speed [m/s]" // SI unit for wind speed
+            };
+            
+        
+            // Get the unit for the selected variable
+            const yAxisUnit = variableUnits[selectedVariable] || "";
+        
             if (chart) {
                 chart.destroy();
             }
-
+        
             const ctx = document.getElementById('dataChart').getContext('2d');
             chart = new Chart(ctx, {
                 type: 'line',
@@ -172,7 +191,6 @@ header img {
                         borderColor: 'rgb(8, 22, 48)',
                         backgroundColor: 'rgb(8, 22, 48)',
                         borderWidth: 2,
-                    
                     }]
                 },
                 options: {
@@ -184,11 +202,55 @@ header img {
                     },
                     scales: {
                         y: {
-                            beginAtZero: true
+                            beginAtZero: true,
+                            title: {
+                                display: true,
+                                text: yAxisUnit // Add the unit as the y-axis label
+                            }
                         }
                     }
                 }
             });
+        }
+        
+        // Helper function to calculate statistics
+        function calculateStatistics(values) {
+            // Filter out null or undefined values
+            const validValues = values.filter(v => v !== null && v !== undefined);
+            if (validValues.length === 0) {
+                return {
+                    mean: "No data",
+                    min: "No data",
+                    max: "No data",
+                    stdDev: "No data"
+                };
+            }
+
+            const mean = validValues.reduce((a, b) => a + b, 0) / validValues.length;
+            const min = Math.min(...validValues);
+            const max = Math.max(...validValues);
+            const variance = validValues.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / validValues.length;
+            const stdDev = Math.sqrt(variance);
+
+            return {
+                mean: mean.toFixed(2),
+                min: min.toFixed(2),
+                max: max.toFixed(2),
+                stdDev: stdDev.toFixed(2)
+            };
+        }
+
+        // Function to update statistics
+        function updateStatistics(values) {
+            const stats = calculateStatistics(values);
+
+            const statsContainer = document.getElementById('statistics');
+            statsContainer.innerHTML = `
+                <p><strong>Mean:</strong> ${stats.mean}</p>
+                <p><strong>Minimum:</strong> ${stats.min}</p>
+                <p><strong>Maximum:</strong> ${stats.max}</p>
+                <p><strong>Standard Deviation:</strong> ${stats.stdDev}</p>
+            `;
         }
 
         // Fetch data and populate dropdown and map
