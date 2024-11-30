@@ -8,23 +8,30 @@
     <style>
     /* Header styling */
     /* Header styling */
-        header {
-            background-color:#b52071;
-            padding: 20px 40px; /* Adjust padding to reduce the space around the content */
-            display: flexpython; /* Use flexbox layout */
-            justify-content: center; /* Center the content horizontally */
-            align-items: center; /* Align content vertically in the center */
-            position: relative; /* Make the image position relative to this container */
-            height:150px;
-}
+    header {
+        background-color: #b52071;
+        padding: 20px 40px; /* Adjust padding to reduce the space around the content */
+        display: flex; /* Use flexbox layout */
+        justify-content: center; /* Center the content horizontally */
+        align-items: center; /* Align content vertically in the center */
+        position: relative; /* Make the image position relative to this container */
+        height: 150px;
+    }
 
-        header img {
-            max-height: 150px; /* Adjust logo size */
-            margin-top: 0; /* Remove margin-top to bring image to the top */
-            display: block; /* Ensure the image behaves like a block element */
-            position: absolute; /* Make the image position absolute within the header */
-            left: 10px; /* Align image to the left of the header */
-}
+    header img {
+        max-height: 150px; /* Adjust logo size */
+        position: absolute; /* Make the image position absolute within the header */
+        left: 20px; /* Align image to the left of the header */
+        top: 50%; /* Vertically center the image */
+        transform: translateY(-50%); /* Center the image more accurately */
+    }
+
+    header h1 {
+        font-size: 45px;
+        color: white;
+        text-align: center; /* Ensure the text is centered within the header */
+        margin: 0; /* Remove default margin to prevent spacing issues */
+    }
 
         .chart-container {
             width: 80%;
