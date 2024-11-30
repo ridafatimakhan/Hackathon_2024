@@ -50,7 +50,14 @@
         align-items: center; /* Center the items vertically */
         margin-top: 20px;  /* Add some space between the heading and the pictures */
     }
-
+    #logo {
+        position: absolute;
+        top: 20px; /* Adjust this value to move logo down or up */
+        right: 20px; /* Adjust this value to move logo left or right */
+        width: 200px; /* Increased size of the logo */
+        height: auto; /* Maintain aspect ratio */
+    }
+    
     #team-pics img {
     width: 100px; /* Set a fixed width for all images */
     height: 100px; /* Set a fixed height for all images */
@@ -318,6 +325,8 @@
 
 </br></br> <br>
     <div id="team-container">
+        <img src="static/TalTech_logo_valge.png" alt="Logo" id="logo"> <!-- Logo added here -->
+
         <h2>Team Members</h2>
         <div id="team-pics">
             <div class="team-member">
