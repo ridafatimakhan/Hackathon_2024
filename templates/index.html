@@ -8,22 +8,22 @@
     <style>
     /* Header styling */
     /* Header styling */
-header {
-    background-color:#b52071;
-    padding: 20px 40px; /* Adjust padding to reduce the space around the content */
-    display: flex; /* Use flexbox layout */
-    justify-content: center; /* Center the content horizontally */
-    align-items: center; /* Align content vertically in the center */
-    position: relative; /* Make the image position relative to this container */
-    height:150px;
+        header {
+            background-color:#b52071;
+            padding: 20px 40px; /* Adjust padding to reduce the space around the content */
+            display: flexpython; /* Use flexbox layout */
+            justify-content: center; /* Center the content horizontally */
+            align-items: center; /* Align content vertically in the center */
+            position: relative; /* Make the image position relative to this container */
+            height:150px;
 }
 
-header img {
-    max-height: 150px; /* Adjust logo size */
-    margin-top: 0; /* Remove margin-top to bring image to the top */
-    display: block; /* Ensure the image behaves like a block element */
-    position: absolute; /* Make the image position absolute within the header */
-    left: 10px; /* Align image to the left of the header */
+        header img {
+            max-height: 150px; /* Adjust logo size */
+            margin-top: 0; /* Remove margin-top to bring image to the top */
+            display: block; /* Ensure the image behaves like a block element */
+            position: absolute; /* Make the image position absolute within the header */
+            left: 10px; /* Align image to the left of the header */
 }
 
         .chart-container {
@@ -57,6 +57,54 @@ header img {
         h2{
             font-size: 30px;
         }
+        #minValue, #maxValue {
+            display: inline-block;
+            margin: 10px 10px;
+            position: relative;
+        }
+        #input-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+
+        #minValue label, #maxValue label {
+            display: block;
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        #minValue input, #maxValue input {
+            padding: 5px;
+            font-size: 14px;
+            width: 100%;
+            max-width: 150px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
+
+        /* Begin and End Date Styling */
+        #beginDateBox, #endDateBox {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            margin: 10px 0;
+        }
+
+        #beginDateBox label, #endDateBox label {
+            font-size: 14px;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        #beginDateBox input, #endDateBox input {
+            padding: 5px;
+            font-size: 14px;
+            border: 2px solid #ccc;
+            border-radius: 5px;
+        }
     </style>
 
 </head>
@@ -74,11 +122,36 @@ header img {
     <div id="map"></div>
     <h2>Meterological Indicators</h2>
     <!-- Dropdown for selecting the variable -->
-    <div class="dropdown-container">
-        <label for="variableSelect">Select indicator: </label>
-        <select id="variableSelect">
-            <option value="">-- Select indicator --</option>
-        </select>
+    <div id="input-container">
+        
+        <div class="dropdown-container">
+            <label for="variableSelect">Select indicator: </label>
+            <select id="variableSelect">
+                <option value="">-- Select indicator --</option>
+            </select>
+        </div>
+        <div id="minValue">
+            <label for="minValue">Min value</label>
+            <input type="number" name="min" min = 0/>
+        </div>
+        <div id="maxValue">
+            <label for="maxValue">Max value</label>
+            <input type="number" name="max" min = 0/>
+        </div>
+        <div id="beginDateBox">
+            <label for="beginDate">Begin date</label>
+            <div id="beginDate">
+                <input type="date" id="begin" name="begin">
+            </div>
+            <input type="number" name="beginHour" min = 0 max=23/>
+        </div>
+        <div id="endDateBox">
+            <label for="endDate">End date</label>
+            <div id="endDate">
+                <input type="date" id="end" name="end">
+            </div>
+            <input type="number" id="endHour" name="endHour" min = 0 max=23/>
+        </div>
     </div>
     <!-- Wrapper for the canvas -->
     <div class="chart-container">
