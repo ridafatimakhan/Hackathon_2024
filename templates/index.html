@@ -1,42 +1,48 @@
 <!DOCTYPE html>
 <html>
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Event replay</title>
+    <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/index.css') }}">
 </head>
 <body>
     <div name="inputs_wrappper" id="inputs_wrappper">
-        <div id="valuePick">
-            <label for="condition">Condition</label>
-            <select name="condition" id="condition">
-                <option value="windSpeed">Wind speed</option>
-                <option value="percipitation">Percipitation</option>
-            </select>
+        <div id="firstRow">
+            <div id="valuePick">
+                <label for="condition">Condition</label>
+                <select name="condition" id="condition">
+                    <option value="windSpeed">Wind speed</option>
+                    <option value="percipitation">Percipitation</option>
+                </select>
+            </div>
+            <div id="minValue">
+                <label for="minValue">Min value</label>
+                <input type="number" name="min" min = 0/>
+            </div>
+            <div id="maxValue">
+                <label for="maxValue">Max value</label>
+                <input type="number" name="max" min = 0/>
+            </div>
         </div>
-        <div id="minValue">
-            <label for="minValue">Min value</label>
-            <input type="number" name="min" min = 0/>
-        </div>
-        <div id="maxValue">
-            <label for="maxValue">Max value</label>
-            <input type="number" name="max" min = 0/>
-        </div>
-        <div id="date">
-            <div id="beginDate">
+        <div id="secondRow"></div>
+            <div id="beginDateBox">
                 <label for="beginDate">Begin date</label>
                 <div id="beginDate">
                     <input type="date" id="begin" name="begin">
                 </div>
                 <input type="number" name="beginHour" min = 0 max=23/>
             </div>
-            <div id="endDateText">
+            <div id="endDateBox">
                 <label for="endDate">End date</label>
                 <div id="endDate">
                     <input type="date" id="end" name="end">
                 </div>
-                <input type="number" name="endHour" min = 0 max=23/>
+                <input type="number" id="endHour" name="endHour" min = 0 max=23/>
             </div>
         </div>
-        <input type="submit" value="Submit">
+        <input type="submit" id="submit" value="Submit">
     </div>
+</div>
 </body>
 </html>
