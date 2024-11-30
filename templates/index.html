@@ -334,31 +334,31 @@
     
         // Add markers for locations
         const locations = [
-            { name: "Heltermaa", coords: [58.815, 22.871] },
-            { name: "Jõgeva", coords: [58.746, 26.357] },
-            { name: "Jõhvi", coords: [59.357, 27.407] },
-            { name: "Kihnu", coords: [58.249, 23.506] },
-            { name: "Kunda", coords: [59.377, 26.243] },
-            { name: "Kuusiku", coords: [58.413, 25.335] },
-            { name: "Narva", coords: [59.379, 28.190] },
-            { name: "Lääne-Nigula", coords: [58.955, 23.392] },
-            { name: "Pakri", coords: [59.315, 24.028] },
-            { name: "Pärnu", coords: [58.385, 24.497] },
-            { name: "Ristna", coords: [58.520, 23.465] },
-            { name: "Kuressaare-Roomassaa", coords: [58.248, 22.483] },
-            { name: "Ruhnu", coords: [58.536, 23.533] },
-            { name: "Sõrve", coords: [58.232, 22.081] },
-            { name: "Tartu-Toravere", coords: [58.290, 26.746] },
-            { name: "Tiirikoja", coords: [58.285, 26.930] },
-            { name: "Tooma", coords: [58.446, 27.416] },
-            { name: "Türi", coords: [58.276, 25.347] },
-            { name: "Valga", coords: [57.776, 26.034] },
-            { name: "Viljandi", coords: [58.362, 25.597] },
-            { name: "Vilsandi", coords: [58.197, 21.917] },
-            { name: "Virtsu", coords: [58.470, 23.597] },
-            { name: "Väike-Maarja", coords: [58.265, 26.362] },
-            { name: "Võru", coords: [57.858, 26.988] },
-            { name: "Tallinn-Harku", coords: [59.358, 24.650] }
+            { name: "Heltermaa", coords: [58.86419, 23.04374] },
+            { name: "Jõgeva", coords: [58.74983, 26.4151] },
+            { name: "Jõhvi", coords: [59.32906,	27.39833] },
+            { name: "Kihnu", coords: [58.09863,	23.97019] },
+            { name: "Kunda", coords: [59.52137,	26.54138] },
+            { name: "Kuusiku", coords: [58.97319, 24.73395] },
+            { name: "Narva", coords: [59.38944, 28.10909] },
+            { name: "Lääne-Nigula", coords: [58.95108, 23.81566] },
+            { name: "Pakri", coords: [59.3895, 24.0401] },
+            { name: "Pärnu", coords: [58.38457, 24.48512] },
+            { name: "Ristna", coords: [58.92096, 22.06631] },
+            { name: "Kuressaare-Roomassaa", coords: [58.21802, 22.50634] },
+            { name: "Ruhnu", coords: [57.78299, 23.26008] },
+            { name: "Sõrve", coords: [57.91358,	22.05792] },
+            { name: "Tartu-Toravere", coords: [58.2641,	26.4613] },
+            { name: "Tiirikoja", coords: [58.8654,	26.9521] },
+            { name: "Tooma", coords: [58.8727, 26.2728] },
+            { name: "Türi", coords: [58.8087, 25.4092] },
+            { name: "Valga", coords: [57.79005,	26.03776] },
+            { name: "Viljandi", coords: [58.37781, 25.60016] },
+            { name: "Vilsandi", coords: [58.38278,	21.81423] },
+            { name: "Virtsu", coords: [58.57269, 23.51357] },
+            { name: "Väike-Maarja", coords: [559.14135, 26.23074] },
+            { name: "Võru", coords: [57.8463, 27.0195] },
+            { name: "Tallinn-Harku", coords: [59.3981, 24.6029] }
         ];
     
         // Add markers with popups
@@ -392,8 +392,8 @@ function calculateStatistics(values) {
         const variableUnits = {
             "#1#windSpeed": "Wind Speed [m/s]",
             "#1#totalPrecipitationOrTotalWaterEquivalent": "Precipitation [mm]",
-            "#1#dewpointTemperature": "Dew Point Temperature [K]",
-            "#1#airTemperature": "Air Temperature [K]",
+            "#1#dewpointTemperature": "Dew Point Temperature [°C]",
+            "#1#airTemperature": "Air Temperature [°C]",
             "#1#maximumWindGustSpeed": "Gust Speed [m/s]"
         };
 
@@ -405,7 +405,7 @@ function calculateStatistics(values) {
 
         const ctx = document.getElementById('dataChart').getContext('2d');
         chart = new Chart(ctx, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: labels,
                 datasets: [{

@@ -30,6 +30,13 @@ def get_data():
         
         # Filter only the selected columns
         filtered_df = df[selected_columns]
+        
+        # Convert temperatures from Kelvin to Celsius
+        if "#1#airTemperature" in filtered_df:
+            filtered_df["#1#airTemperature"] = filtered_df["#1#airTemperature"] - 273.15
+        if "#1#dewpointTemperature" in filtered_df:
+            filtered_df["#1#dewpointTemperature"] = filtered_df["#1#dewpointTemperature"] - 273.15
+        
     except KeyError as e:
         return jsonify({"error": f"Column not found: {e}"}), 400
     except Exception as e:
@@ -43,6 +50,7 @@ def get_data():
                 record[key] = None  # Replace NaN with None
     
     return jsonify(data_json)
+
 
 @app.route('/statistics/<variable>')
 def get_statistics(variable):
