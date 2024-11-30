@@ -36,10 +36,9 @@
             height: auto !important;
         }
         .dropdown-container {
-            text-align: center;
-            margin-bottom: 20px;
-            position: absolute; /* Make the image position absolute within the header */
-            left: 10px; /* Align image to the left of the header */
+            text-align: left;
+            margin-bottom: 10px;
+            width: auto;
         }
         select {
             padding: 10px;
@@ -65,47 +64,41 @@
         }
         #input-container {
             display: flex;
-            justify-content: center;
+            justify-content: space-around;
             align-items: center;
             flex-wrap: wrap;
-            margin: 20px 0;
+            gap: 20px;
+            margin: 20px auto;
+            width: 80%;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            background-color: #f9f9f9;
         }
-
-        #minValue label, #maxValue label {
-            display: block;
-            font-size: 14px;
+        #input-container label {
+            font-size: 16px; /* Consistent font size */
             font-weight: bold;
+            margin-bottom: 5px; /* Add space between label and input */
+            color: #333; /* Consistent label color */
         }
+        #input-container input,
+    	#input-container select {
+    	    padding: 10px; /* Add padding for comfortable input */
+    	    font-size: 16px; /* Match font size of labels */
+    	    border: 1px solid #ccc; /* Consistent border */
+    	    border-radius: 5px; /* Rounded corners */
+    	    width: 100%; /* Ensure inputs fill their container */
+    	    max-width: 150px; /* Limit the width for readability */
+    	    background-color: #fff; /* White background for inputs */
+    	}
 
-        #minValue input, #maxValue input {
-            padding: 5px;
-            font-size: 14px;
-            width: 100%;
-            max-width: 150px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-        }
 
-        /* Begin and End Date Styling */
-        #beginDateBox, #endDateBox {
+        #input-container div {
             display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            margin: 10px 0;
-        }
-
-        #beginDateBox label, #endDateBox label {
-            font-size: 14px;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-
-        #beginDateBox input, #endDateBox input {
-            padding: 5px;
-            font-size: 14px;
-            border: 2px solid #ccc;
-            border-radius: 5px;
-        }
+            flex-direction: column; /* Stack labels and inputs vertically */
+            align-items: flex-start; /* Align labels and inputs to the left */
+            width: auto;
+    }
     </style>
 
 </head>
@@ -153,6 +146,7 @@
             </div>
             <input type="number" id="endHour" name="endHour" min = 0 max=23/>
         </div>
+        <input type="submit" value="Submit">
     </div>
     <!-- Wrapper for the canvas -->
     <div class="chart-container">
