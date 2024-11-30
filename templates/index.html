@@ -9,7 +9,7 @@
     /* Header styling */
     /* Header styling */
     header {
-        background-color: #b52071;
+        background-color:#081630;
         padding: 20px 40px; /* Adjust padding to reduce the space around the content */
         display: flex; /* Use flexbox layout */
         justify-content: center; /* Center the content horizontally */
@@ -60,10 +60,14 @@
         h1{
             font-size: 45px;
             color: white;
+            padding-left: 40px; /* Adjust this value as needed */
+
         }
-        h2{
+        h2 {
             font-size: 30px;
+            padding-left: 40px; /* Adjust this value as needed */
         }
+        
         #minValue, #maxValue {
             display: inline-block;
             margin: 10px 10px;
@@ -80,13 +84,13 @@
             padding: 20px;
             border: 1px solid #ccc;
             border-radius: 10px;
-            background-color: #f9f9f9;
+            background-color: #081630;
         }
         #input-container label {
             font-size: 16px; /* Consistent font size */
             font-weight: bold;
             margin-bottom: 5px; /* Add space between label and input */
-            color: #333; /* Consistent label color */
+            color: white; /* Consistent label color */
         }
         #input-container input,
     	#input-container select {
@@ -106,13 +110,52 @@
             align-items: flex-start; /* Align labels and inputs to the left */
             width: auto;
     }
+    #statistics {
+        font-family: Arial, sans-serif;
+        background-color: #081630;
+        padding: 15px;
+        border-radius: 8px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        max-width: 400px;
+        margin: 20px auto;
+        text-align: left;
+      
+        text-align: left; /* Align text to the left */
+        margin-left: 80px; /* Add some space from the left edge */
+    
+        
+    }
+    
+    #statistics h2 {
+        font-size: 1.5rem;
+        color: #333;
+        margin-bottom: 10px;
+    }
+    
+    #statistics p {
+        font-size: 1rem;
+        color: white;
+        margin: 8px 0;
+    }
+    
+    #statistics p strong {
+        font-weight: bold;
+        color: #333;
+    }
+    
+    #statistics .highlight {
+        font-size: 1.1rem;
+        color: #007bff;
+        font-weight: bold;
+    }
+    
     </style>
 
 </head>
 <body>
     <header>
         <h1>Visualization of Open Data </h1>
-        <img src="{{ url_for('static', filename='imgpsh_fullsize_anim-removebg-preview.png') }}" alt="Logo">
+        <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.png') }}" alt="Logo">
       
     </header>
 
@@ -160,15 +203,16 @@
         <canvas id="dataChart" width="400" height="200"></canvas>
     </div>
 
-    <h2>Statistics</h2>
+    <h2> Statistics:</h2>
     <div id="statistics">
         <p>No data available yet. Please select a variable.</p>
     </div>
 
 
+  
     <script>
         let chart; // Chart.js instance
-
+    
         // Mapping of original column names to display names
         const columnDisplayNames = {
             "#1#windSpeed": "Wind Speed",
@@ -177,21 +221,18 @@
             "#1#airTemperature": "Air Temperature",
             "#1#maximumWindGustSpeed": "Max Wind Gust"
         };
-
-        // Initialize the Leaflet map
-
-         // Initialize the Leaflet map centered on Estonia
-         const map = L.map('map').setView([58.595272, 25.013607], 7);
-
-         // Add OpenStreetMap tiles
-         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-             maxZoom: 19,
-             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-         }).addTo(map);
- 
-         // Add markers for cities and towns
-         const locations = [
-            
+    
+        // Initialize the Leaflet map centered on Estonia
+        const map = L.map('map').setView([58.595272, 25.013607], 7);
+    
+        // Add OpenStreetMap tiles
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+    
+        // Add markers for locations
+        const locations = [
             { name: "Heltermaa", coords: [58.815, 22.871] },
             { name: "Jõgeva", coords: [58.746, 26.357] },
             { name: "Jõhvi", coords: [59.357, 27.407] },
@@ -218,141 +259,116 @@
             { name: "Võru", coords: [57.858, 26.988] },
             { name: "Tallinn-Harku", coords: [59.358, 24.650] }
         ];
-
-
-         // Add markers with always-open popups
-         locations.forEach(location => {
-             const marker = L.marker(location.coords)
-                 .addTo(map)
-                 .bindPopup(`<b>${location.name}</b>`);
- 
-             // Open the popup immediately after adding the marker
-             marker.openPopup();
-         });
+    
+        // Add markers with popups
+        locations.forEach(location => {
+            L.marker(location.coords)
+                .addTo(map)
+                .bindPopup(`<b>${location.name}</b>`)
+                .openPopup();
+        });
+    
         // Function to update the chart
-        function updateChart(data, selectedVariable) {
-            const labels = data.map(item => item["#1#longStationName"] || "Unknown");
-            const values = data.map(item => item[selectedVariable] || null);
         
-            // Mapping of variables to their units
-            const variableUnits = {
-                "#1#windSpeed": "Wind Speed [m/s]", // SI unit for wind speed
-                "#1#totalPrecipitationOrTotalWaterEquivalent": "Precipitation [mm]", // SI unit for precipitation
-                "#1#dewpointTemperature": "Dew Point Temperature [K]", // SI unit for temperature (Kelvin)
-                "#1#airTemperature": "Air Temperature [K]", // SI unit for temperature (Kelvin)
-                "#1#maximumWindGustSpeed": "Gust Speed [m/s]" // SI unit for wind speed
-            };
-            
-        
-            // Get the unit for the selected variable
-            const yAxisUnit = variableUnits[selectedVariable] || "";
-        
-            if (chart) {
-                chart.destroy();
-            }
-        
-            const ctx = document.getElementById('dataChart').getContext('2d');
-            chart = new Chart(ctx, {
-                type: 'line',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: columnDisplayNames[selectedVariable] || selectedVariable,
-                        data: values,
-                        borderColor: 'rgb(8, 22, 48)',
-                        backgroundColor: 'rgb(8, 22, 48)',
-                        borderWidth: 2,
-                    }]
+        // Function to calculate statistics (Mean, Min, Max, STD)
+function calculateStatistics(values) {
+    const validValues = values.filter(value => value !== null);  // Remove null values
+    if (validValues.length === 0) return null;
+
+    const mean = validValues.reduce((a, b) => a + b, 0) / validValues.length;
+    const min = Math.min(...validValues);
+    const max = Math.max(...validValues);
+    const std = Math.sqrt(validValues.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / validValues.length);
+
+    return { mean, min, max, std };
+}
+
+// Function to update the chart and statistics
+    function updateChart(data, selectedVariable) {
+        const labels = data.map(item => item["#1#longStationName"] || "Unknown");
+        const values = data.map(item => item[selectedVariable] || null);
+
+        const variableUnits = {
+            "#1#windSpeed": "Wind Speed [m/s]",
+            "#1#totalPrecipitationOrTotalWaterEquivalent": "Precipitation [mm]",
+            "#1#dewpointTemperature": "Dew Point Temperature [K]",
+            "#1#airTemperature": "Air Temperature [K]",
+            "#1#maximumWindGustSpeed": "Gust Speed [m/s]"
+        };
+
+        const yAxisUnit = variableUnits[selectedVariable] || "";
+
+        if (chart) {
+            chart.destroy();
+        }
+
+        const ctx = document.getElementById('dataChart').getContext('2d');
+        chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: columnDisplayNames[selectedVariable] || selectedVariable,
+                    data: values,
+                    borderColor: 'rgb(8, 22, 48)',
+                    backgroundColor: 'rgba(8, 22, 48, 0.2)',
+                    borderWidth: 2,
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { display: true }
                 },
-                options: {
-                    responsive: true,
-                    plugins: {
-                        legend: {
-                            display: true
-                        }
-                    },
-                    scales: {
-                        y: {
-                            beginAtZero: true,
-                            title: {
-                                display: true,
-                                text: yAxisUnit // Add the unit as the y-axis label
-                            }
-                        }
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: { display: true, text: yAxisUnit }
                     }
                 }
-            });
-        }
-        
-        // Helper function to calculate statistics
-        function calculateStatistics(values) {
-            // Filter out null or undefined values
-            const validValues = values.filter(v => v !== null && v !== undefined);
-            if (validValues.length === 0) {
-                return {
-                    mean: "No data",
-                    min: "No data",
-                    max: "No data",
-                    stdDev: "No data"
-                };
             }
+        });
 
-            const mean = validValues.reduce((a, b) => a + b, 0) / validValues.length;
-            const min = Math.min(...validValues);
-            const max = Math.max(...validValues);
-            const variance = validValues.reduce((sum, value) => sum + Math.pow(value - mean, 2), 0) / validValues.length;
-            const stdDev = Math.sqrt(variance);
-
-            return {
-                mean: mean.toFixed(2),
-                min: min.toFixed(2),
-                max: max.toFixed(2),
-                stdDev: stdDev.toFixed(2)
-            };
-        }
-
-        // Function to update statistics
-        function updateStatistics(values) {
-            const stats = calculateStatistics(values);
-
-            const statsContainer = document.getElementById('statistics');
-            statsContainer.innerHTML = `
-                <p><strong>Mean:</strong> ${stats.mean}</p>
-                <p><strong>Minimum:</strong> ${stats.min}</p>
-                <p><strong>Maximum:</strong> ${stats.max}</p>
-                <p><strong>Standard Deviation:</strong> ${stats.stdDev}</p>
+        // Calculate statistics and update the statistics section
+        const stats = calculateStatistics(values);
+        if (stats) {
+            document.getElementById('statistics').innerHTML = `
+                <p>Mean: ${stats.mean.toFixed(2)}</p>
+                <p>Min: ${stats.min.toFixed(2)}</p>
+                <p>Max: ${stats.max.toFixed(2)}</p>
+                <p>Standard Deviation: ${stats.std.toFixed(2)}</p>
+            `;
+        } else {
+            document.getElementById('statistics').innerHTML = `
+                <p>No valid data for this variable.</p>
             `;
         }
+    }
 
-        // Fetch data and populate dropdown and map
+        
+        // Fetch data and populate dropdown
         fetch('/data')
             .then(response => response.json())
             .then(data => {
-                // Populate the dropdown
                 const columnNames = Object.keys(data[0] || {}).filter(column => column !== "#1#longStationName");
                 const variableSelect = document.getElementById('variableSelect');
+                const submitButton = document.querySelector('input[type="submit"]');
+    
+                // Populate dropdown
                 columnNames.forEach(column => {
                     const option = document.createElement('option');
                     option.value = column;
                     option.textContent = columnDisplayNames[column] || column;
                     variableSelect.appendChild(option);
                 });
-
-                // Add markers to the map
-                data.forEach(item => {
-                    const stationName = item["#1#longStationName"] || "Unknown";
-                    const lat = item["latitude"]; // Replace with your latitude column name
-                    const lon = item["longitude"]; // Replace with your longitude column name
-                    if (lat && lon) {
-                        L.marker([lat, lon]).addTo(map).bindPopup(`<b>${stationName}</b>`).openPopup();
-                    }
-                });
-
-                // Event listener for the dropdown
-                variableSelect.addEventListener('change', () => {
+    
+                // Event listener for Submit button
+                submitButton.addEventListener('click', () => {
                     const selectedVariable = variableSelect.value;
                     if (selectedVariable) {
                         updateChart(data, selectedVariable);
+                    } else {
+                        alert('Please select a variable before submitting.');
                     }
                 });
             })
