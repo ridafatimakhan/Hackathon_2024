@@ -1,9 +1,225 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Flask App</title>
+    <title>Event Replay</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+    /* Header styling */
+    /* Header styling */
+header {
+    background-color:#b52071;
+    padding: 20px 40px; /* Adjust padding to reduce the space around the content */
+    display: flex; /* Use flexbox layout */
+    justify-content: center; /* Center the content horizontally */
+    align-items: center; /* Align content vertically in the center */
+    position: relative; /* Make the image position relative to this container */
+    height:150px;
+}
+
+header img {
+    max-height: 150px; /* Adjust logo size */
+    margin-top: 0; /* Remove margin-top to bring image to the top */
+    display: block; /* Ensure the image behaves like a block element */
+    position: absolute; /* Make the image position absolute within the header */
+    left: 10px; /* Align image to the left of the header */
+}
+
+        .chart-container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        canvas {
+            width: 100% !important;
+            height: auto !important;
+        }
+        .dropdown-container {
+            text-align: center;
+            margin-bottom: 20px;
+            position: absolute; /* Make the image position absolute within the header */
+            left: 10px; /* Align image to the left of the header */
+        }
+        select {
+            padding: 10px;
+            font-size: 16px;
+        }
+        #map {
+            width: 80%;
+            height: 500px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+        }
+        h1{
+            font-size: 45px;
+        }
+        h2{
+            font-size: 30px;
+        }
+    </style>
+
 </head>
 <body>
-    <h1>Welcome to Flask</h1>
+    <header>
+        <h1>Visualization of Open Data </h1>
+        <img src="{{ url_for('static', filename='G20.png') }}" alt="Logo">
+      
+    </header>
+
+
+    <h2>Monitoring Stations Across Estonia</h2>
+    
+    <!-- Map container -->
+    <div id="map"></div>
+    <h2>Meterological Indicators</h2>
+    <!-- Dropdown for selecting the variable -->
+    <div class="dropdown-container">
+        <label for="variableSelect">Select indicator: </label>
+        <select id="variableSelect">
+            <option value="">-- Select indicator --</option>
+        </select>
+    </div>
+    <!-- Wrapper for the canvas -->
+    <div class="chart-container">
+        <canvas id="dataChart" width="400" height="200"></canvas>
+    </div>
+
+    
+
+    <script>
+        let chart; // Chart.js instance
+
+        // Mapping of original column names to display names
+        const columnDisplayNames = {
+            "#1#windSpeed": "Wind Speed",
+            "#1#totalPrecipitationOrTotalWaterEquivalent": "Total Precipitation",
+            "#1#dewpointTemperature": "Dew Point Temperature"
+        };
+
+        // Initialize the Leaflet map
+
+         // Initialize the Leaflet map centered on Estonia
+         const map = L.map('map').setView([58.595272, 25.013607], 7);
+
+         // Add OpenStreetMap tiles
+         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+             maxZoom: 19,
+             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+         }).addTo(map);
+ 
+         // Add markers for cities and towns
+         const locations = [
+            
+            { name: "Heltermaa", coords: [58.815, 22.871] },
+            { name: "Jõgeva", coords: [58.746, 26.357] },
+            { name: "Jõhvi", coords: [59.357, 27.407] },
+            { name: "Kihnu", coords: [58.249, 23.506] },
+            { name: "Kunda", coords: [59.377, 26.243] },
+            { name: "Kuusiku", coords: [58.413, 25.335] },
+            { name: "Narva", coords: [59.379, 28.190] },
+            { name: "Lääne-Nigula", coords: [58.955, 23.392] },
+            { name: "Pakri", coords: [59.315, 24.028] },
+            { name: "Pärnu", coords: [58.385, 24.497] },
+            { name: "Ristna", coords: [58.520, 23.465] },
+            { name: "Kuressaare-Roomassaa", coords: [58.248, 22.483] },
+            { name: "Ruhnu", coords: [58.536, 23.533] },
+            { name: "Sõrve", coords: [58.232, 22.081] },
+            { name: "Tartu-Toravere", coords: [58.290, 26.746] },
+            { name: "Tiirikoja", coords: [58.285, 26.930] },
+            { name: "Tooma", coords: [58.446, 27.416] },
+            { name: "Türi", coords: [58.276, 25.347] },
+            { name: "Valga", coords: [57.776, 26.034] },
+            { name: "Viljandi", coords: [58.362, 25.597] },
+            { name: "Vilsandi", coords: [58.197, 21.917] },
+            { name: "Virtsu", coords: [58.470, 23.597] },
+            { name: "Väike-Maarja", coords: [58.265, 26.362] },
+            { name: "Võru", coords: [57.858, 26.988] },
+            { name: "Tallinn-Harku", coords: [59.358, 24.650] }
+        ];
+
+
+         // Add markers with always-open popups
+         locations.forEach(location => {
+             const marker = L.marker(location.coords)
+                 .addTo(map)
+                 .bindPopup(`<b>${location.name}</b>`);
+ 
+             // Open the popup immediately after adding the marker
+             marker.openPopup();
+         });
+        // Function to update the chart
+        function updateChart(data, selectedVariable) {
+            const labels = data.map(item => item["#1#longStationName"] || "Unknown");
+            const values = data.map(item => item[selectedVariable] || null);
+
+            if (chart) {
+                chart.destroy();
+            }
+
+            const ctx = document.getElementById('dataChart').getContext('2d');
+            chart = new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: columnDisplayNames[selectedVariable] || selectedVariable,
+                        data: values,
+                        borderColor: '#b52071',
+                        backgroundColor: '#b52071',
+                        borderWidth: 2,
+                    
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: true
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+
+        // Fetch data and populate dropdown and map
+        fetch('/data')
+            .then(response => response.json())
+            .then(data => {
+                // Populate the dropdown
+                const columnNames = Object.keys(data[0] || {}).filter(column => column !== "#1#longStationName");
+                const variableSelect = document.getElementById('variableSelect');
+                columnNames.forEach(column => {
+                    const option = document.createElement('option');
+                    option.value = column;
+                    option.textContent = columnDisplayNames[column] || column;
+                    variableSelect.appendChild(option);
+                });
+
+                // Add markers to the map
+                data.forEach(item => {
+                    const stationName = item["#1#longStationName"] || "Unknown";
+                    const lat = item["latitude"]; // Replace with your latitude column name
+                    const lon = item["longitude"]; // Replace with your longitude column name
+                    if (lat && lon) {
+                        L.marker([lat, lon]).addTo(map).bindPopup(`<b>${stationName}</b>`).openPopup();
+                    }
+                });
+
+                // Event listener for the dropdown
+                variableSelect.addEventListener('change', () => {
+                    const selectedVariable = variableSelect.value;
+                    if (selectedVariable) {
+                        updateChart(data, selectedVariable);
+                    }
+                });
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
 </body>
 </html>
