@@ -53,6 +53,7 @@
         }
         h1{
             font-size: 45px;
+            color: white;
         }
         h2{
             font-size: 30px;
@@ -111,7 +112,7 @@
 <body>
     <header>
         <h1>Visualization of Open Data </h1>
-        <img src="{{ url_for('static', filename='G20.png') }}" alt="Logo">
+        <img src="{{ url_for('static', filename='imgpsh_fullsize_anim-removebg-preview.png') }}" alt="Logo">
       
     </header>
 
@@ -238,8 +239,8 @@
                     datasets: [{
                         label: columnDisplayNames[selectedVariable] || selectedVariable,
                         data: values,
-                        borderColor: '#b52071',
-                        backgroundColor: '#b52071',
+                        borderColor: 'rgb(8, 22, 48)',
+                        backgroundColor: 'rgb(8, 22, 48)',
                         borderWidth: 2,
                     
                     }]
