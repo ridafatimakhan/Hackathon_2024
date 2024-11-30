@@ -32,7 +32,32 @@
         text-align: center; /* Ensure the text is centered within the header */
         margin: 0; /* Remove default margin to prevent spacing issues */
     }
+    #team-container {
+    background-color: #081630;
+    padding: 20px 40px; /* Adjust padding to reduce the space around the content */
+    display: flex; /* Use flexbox layout */
+    flex-direction: column; /* Stack items vertically */
+    justify-content: center; /* Vertically center content */
+    align-items: center; /* Horizontally center content */
+    position: relative; /* Make the image position relative to this container */
+    height: auto; /* Adjust the height to fit content */
+    color: white;
+}
 
+    #team-pics {
+        display: flex; /* Align the items in a row */
+        justify-content: center; /* Center the items horizontally */
+        align-items: center; /* Center the items vertically */
+        margin-top: 20px;  /* Add some space between the heading and the pictures */
+    }
+
+    #team-pics img {
+    width: 100px; /* Set a fixed width for all images */
+    height: 100px; /* Set a fixed height for all images */
+    object-fit: cover; /* Ensure the image fills the defined area without distortion */
+    border-radius: 50%; /* Optional: makes the images circular */
+    margin: 0 10px; /* Space between the images */
+}
         .chart-container {
             width: 80%;
             margin: 0 auto;
@@ -208,7 +233,16 @@
         <p>No data available yet. Please select a variable.</p>
     </div>
 
-
+    <div id="team-container">
+        <h2>Team Members</h2>
+        <div id="team-pics">
+            <img src="static\team_member_pictures\rida.png" alt="Rida">
+            <img src="static\team_member_pictures\ali.png" alt="Ali">
+            <img src="static\team_member_pictures\laura.png" alt="Laura">
+            <img src="static\team_member_pictures\dimitris.png" alt="Dmitris">
+            <img src="static\team_member_pictures\helena.png" alt="Helena">
+        </div>
+    </div>
   
     <script>
         let chart; // Chart.js instance
