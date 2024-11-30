@@ -2,11 +2,11 @@
 <html>
 <head>
     <title>Event Replay</title>
+    <link rel="icon" href="{{ url_for('static', filename='imgpsh_fullsize_anim.png') }}" type="image/png">
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <style>
-    /* Header styling */
     /* Header styling */
     header {
         background-color:#081630;
@@ -141,7 +141,7 @@
         padding: 15px;
         border-radius: 8px;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        max-width: 400px;
+        width: 80%;
         margin: 20px auto;
         text-align: left;
       
@@ -171,6 +171,43 @@
     #statistics .highlight {
         font-size: 1.1rem;
         color: #007bff;
+        font-weight: bold;
+    }
+    #simulator {
+        display: flex;
+        justify-content: center; /* Centers the gifs horizontally */
+        align-items: center; /* Centers the gifs vertically */
+        gap: 20px; /* Adds space between the GIFs */
+        background-color: #081630;
+        margin-left: 50px; /* Add some space from the left edge */
+        margin-right: 50px; /* Add some space from the left edge */
+        height: auto;
+
+    }
+    
+    .gif-container img {
+        width: 250px; /* Adjust based on your preference */
+        height: auto;
+        border: 2px solid #ccc; /* Optional: Adds a border around each GIF */
+    }
+    #team-pics {
+        display: flex;
+        justify-content: space-around;
+        flex-wrap: wrap;
+    }
+    
+    .team-member {
+        text-align: center;
+        margin: 10px;
+    }
+    
+    .team-member img {
+        max-width: 150px;
+        border-radius: 50%;
+    }
+    
+    .team-member p {
+        margin-top: 8px;
         font-weight: bold;
     }
     
@@ -228,20 +265,50 @@
         <canvas id="dataChart" width="400" height="200"></canvas>
     </div>
 
-    <h2> Statistics:</h2>
+    <h2> Indicator Statistics</h2>
     <div id="statistics">
         <p>No data available yet. Please select a variable.</p>
     </div>
 
+    <h2>Simulator Results</h2>
+    <br><br>
+<div id="simulator" style="display: none; justify-content: space-around;">
+    <!-- First GIF -->
+    <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 1" style="max-width: 45%;">
+
+    <!-- Second GIF -->
+    <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 2" style="max-width: 45%;">
+</div>
+
+
+    </div>
+
+</br></br> <br>
     <div id="team-container">
         <h2>Team Members</h2>
         <div id="team-pics">
-            <img src="static\team_member_pictures\rida.png" alt="Rida">
-            <img src="static\team_member_pictures\ali.png" alt="Ali">
-            <img src="static\team_member_pictures\laura.png" alt="Laura">
-            <img src="static\team_member_pictures\dimitris.png" alt="Dmitris">
-            <img src="static\team_member_pictures\helena.png" alt="Helena">
+            <div class="team-member">
+                <img src="static/team_member_pictures/laura.png" alt="Laura">
+                <p>Laura Piho</p>
+            </div>
+            <div class="team-member">
+                <img src="static/team_member_pictures/helena.png" alt="Helena">
+                <p>Helena Udu</p>
+            </div>
+            <div class="team-member">
+                <img src="static/team_member_pictures/rida.png" alt="Rida">
+                <p>Rida Fatima</p>
+            </div>
+            <div class="team-member">
+                <img src="static/team_member_pictures/ali.png" alt="Ali">
+                <p>Ali Khan</p>
+            </div>
+            <div class="team-member">
+                <img src="static/team_member_pictures/dimitris.png" alt="Dimitris">
+                <p>Dimitris Xydianos</p>
+            </div>
         </div>
+        
     </div>
   
     <script>
@@ -396,15 +463,20 @@ function calculateStatistics(values) {
                     variableSelect.appendChild(option);
                 });
     
-                // Event listener for Submit button
-                submitButton.addEventListener('click', () => {
-                    const selectedVariable = variableSelect.value;
-                    if (selectedVariable) {
-                        updateChart(data, selectedVariable);
-                    } else {
-                        alert('Please select a variable before submitting.');
-                    }
-                });
+               // Event listener for Submit button
+            submitButton.addEventListener('click', () => {
+                const selectedVariable = variableSelect.value;
+                if (selectedVariable) {
+                    updateChart(data, selectedVariable);
+                    
+                    // Show the GIFs after submit
+                    const simulatorContainer = document.getElementById('simulator');
+                    simulatorContainer.style.display = 'flex';  // Make the GIFs visible
+                } else {
+                    alert('Please select a variable before submitting.');
+                }
+            });
+
             })
             .catch(error => console.error('Error fetching data:', error));
     </script>
