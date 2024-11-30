@@ -19,7 +19,7 @@
     }
 
     header img {
-        max-height: 150px; /* Adjust logo size */
+        max-height: 180px; /* Adjust logo size */
         position: absolute; /* Make the image position absolute within the header */
         left: 20px; /* Align image to the left of the header */
         top: 50%; /* Vertically center the image */
@@ -83,7 +83,7 @@
             border: 1px solid #ccc;
         }
         h1{
-            font-size: 45px;
+            font-size: 30px;
             color: white;
             padding-left: 40px; /* Adjust this value as needed */
 
@@ -175,18 +175,29 @@
     }
     #simulator {
         display: flex;
-        justify-content: center; /* Centers the gifs horizontally */
-        align-items: center; /* Centers the gifs vertically */
-        gap: 20px; /* Adds space between the GIFs */
+        flex-direction: row; /* Aligns items in a row */
+        justify-content: center; /* Centers the GIFs horizontally */
+        align-items: center; /* Aligns GIFs vertically */
         background-color: #081630;
-        margin-left: 50px; /* Add some space from the left edge */
-        margin-right: 50px; /* Add some space from the left edge */
-        height: auto;
-
+        margin: 20px auto; /* Centers the container and adds top/bottom margin */
+        padding: 10px; /* Adds padding inside the container */
+        gap: 30px; /* Adds space between the GIFs */
     }
     
+    .gif {
+        height: 400px; /* Sets the height to a fixed value */
+        width: auto; /* Adjusts the width to maintain the aspect ratio */
+        border: 2px solid #ccc; /* Optional: Adds a border around each GIF */
+        border-radius: 5px; /* Adds rounded corners to the GIFs */
+    }
+    
+        
+    
+    
+    
+    
     .gif-container img {
-        width: 250px; /* Adjust based on your preference */
+        width: 20px; /* Adjust based on your preference */
         height: auto;
         border: 2px solid #ccc; /* Optional: Adds a border around each GIF */
     }
@@ -216,7 +227,7 @@
 </head>
 <body>
     <header>
-        <h1>Visualization of Open Data </h1>
+        <h1>VISUALIZATION OF OPEN DATA</h1>
         <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.png') }}" alt="Logo">
       
     </header>
@@ -269,16 +280,21 @@
     <div id="statistics">
         <p>No data available yet. Please select a variable.</p>
     </div>
-
+<br><br>
     <h2>Simulator Results</h2>
-    <br><br>
-<div id="simulator" style="display: none; justify-content: space-around;">
-    <!-- First GIF -->
-    <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 1" style="max-width: 45%;">
+    <br>
+    <div id="simulator" style="display: none;"> 
+        <!-- First GIF -->
+        <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 1" class="gif">
+    
+        <!-- Second GIF -->
+        <img src="{{ url_for('static', filename='imgpsh_fullsize_animm.gif') }}" alt="Simulator 2" class="gif">
+    </div>
+    
+    
 
-    <!-- Second GIF -->
-    <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 2" style="max-width: 45%;">
-</div>
+<br><br>
+
 
 
     </div>
