@@ -175,21 +175,36 @@
     }
     #simulator {
         display: flex;
-        flex-direction: row; /* Aligns items in a row */
-        justify-content: center; /* Centers the GIFs horizontally */
-        align-items: center; /* Aligns GIFs vertically */
+        flex-direction: column; /* Stacks GIFs vertically */
+        align-items: center; /* Centers the GIFs horizontally */
         background-color: #081630;
-        margin: 20px auto; /* Centers the container and adds top/bottom margin */
-        padding: 10px; /* Adds padding inside the container */
-        gap: 30px; /* Adds space between the GIFs */
+        margin: 20px 50px; /* Adds space around the container */
+        padding: 10px; /* Adds padding around the GIFs */
+        gap: 20px; /* Adds spacing between the GIFs */
     }
     
     .gif {
-        height: 400px; /* Sets the height to a fixed value */
-        width: auto; /* Adjusts the width to maintain the aspect ratio */
+       
         border: 2px solid #ccc; /* Optional: Adds a border around each GIF */
-        border-radius: 5px; /* Adds rounded corners to the GIFs */
+        border-radius: 5px; /* Optional: Adds rounded corners */
     }
+    
+    /* Specific styles for the first GIF */
+    .gif:first-of-type {
+        height: 500px; /* Height for the first GIF */
+        
+       
+    }
+    
+    /* Specific styles for the second GIF */
+    .gif:last-of-type {
+        height: 550px; /* Height for the second GIF */
+    }
+    
+    
+
+    
+    
     
         
     
@@ -281,15 +296,17 @@
         <p>No data available yet. Please select a variable.</p>
     </div>
 <br><br>
-    <h2>Simulator Results</h2>
-    <br>
-    <div id="simulator" style="display: none;"> 
-        <!-- First GIF -->
-        <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 1" class="gif">
-    
-        <!-- Second GIF -->
-        <img src="{{ url_for('static', filename='imgpsh_fullsize_animm.gif') }}" alt="Simulator 2" class="gif">
-    </div>
+<h2>Simulator Results</h2>
+<br><br>
+<div id="simulator" style="display: none;"> 
+    <!-- First GIF -->
+    <img src="{{ url_for('static', filename='imgpsh_fullsize_anim.gif') }}" alt="Simulator 1" class="gif">
+
+    <!-- Second GIF -->
+    <img src="{{ url_for('static', filename='imgpsh_fullsize_animm.gif') }}" alt="Simulator 2" class="gif">
+</div>
+
+
     
     
 
@@ -316,7 +333,7 @@
                 <p>Rida Fatima</p>
             </div>
             <div class="team-member">
-                <img src="static/team_member_pictures/ali.png" alt="Ali">
+                <img src="static/team_member_pictures/Ali.png" alt="Ali">
                 <p>Ali Khan</p>
             </div>
             <div class="team-member">
